@@ -56,13 +56,6 @@ def generate_launch_description():
         ]
     )
 
-    # base_link to base_laser tf node
-    base_link_to_laser_tf_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='base_link_to_base_laser_ld19',
-        arguments=['0','0','0.18','0','0','0','base_link','base_laser']
-    )
 
     ros2_laser_scan_matcher = Node(
             package='ros2_laser_scan_matcher',
@@ -70,9 +63,9 @@ def generate_launch_description():
             name='laser_scan_matcher',
             output='screen',
             parameters=[{
-                
+
                 'publish_tf': True,
-                'publish_odom': True,
+                'publish_odom': 'odom',
                 # You can add other parameters here, like frames:
                 'base_frame': 'base_link',
                 'laser_frame': 'laser_link'
@@ -83,7 +76,6 @@ def generate_launch_description():
 
     ld.add_action(ros2_laser_scan_matcher)
     ld.add_action(ldlidar_node)
-    ld.add_action(base_link_to_laser_tf_node)
     ld.add_action(robot_logic_node)
     ld.add_action(robot_motors_node)
     ld.add_action(robot_sensors_node)
