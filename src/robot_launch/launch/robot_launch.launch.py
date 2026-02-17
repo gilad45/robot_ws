@@ -70,7 +70,7 @@ def generate_launch_description():
             name='laser_scan_matcher',
             output='screen',
             parameters=[{
-                'publish_odom': '/odom',
+                
                 'publish_tf': True,
                 'publish_odom': True,
                 # You can add other parameters here, like frames:
