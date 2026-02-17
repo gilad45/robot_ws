@@ -64,11 +64,23 @@ def generate_launch_description():
         arguments=['0','0','0.18','0','0','0','base_link','base_laser']
     )
 
+    ros2_laser_scan_matcher = Node(
+            package='ros2_laser_scan_matcher',
+            executable='laser_scan_matcher',
+            name='laser_scan_matcher',
+            output='screen',
+            parameters=[{
+                'publish_odom': '/odom',
+                'publish_tf': True,
+                # You can add other parameters here, like frames:
+                # 'base_frame': 'base_link',
+                # 'map_frame': 'map',
+            }]
+    )
+
+    ld.add_action(ros2_laser_scan_matcher)
     ld.add_action(ldlidar_node)
     ld.add_action(base_link_to_laser_tf_node)
-
-    
-
     ld.add_action(robot_logic_node)
     ld.add_action(robot_motors_node)
     ld.add_action(robot_sensors_node)
