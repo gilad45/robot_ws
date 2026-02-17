@@ -46,7 +46,7 @@ def generate_launch_description():
         parameters=[
             {'product_name': 'LDLiDAR_LD19'},
             {'topic_name': 'scan'},
-            {'frame_id': 'base_laser'},
+            {'frame_id': 'laser_link'},
             {'port_name': '/dev/ttyUSB0'},
             {'port_baudrate': 230400},
             {'laser_scan_dir': True},
@@ -72,8 +72,11 @@ def generate_launch_description():
             parameters=[{
                 'publish_odom': '/odom',
                 'publish_tf': True,
+                'publish_odom': True,
                 # You can add other parameters here, like frames:
-                # 'base_frame': 'base_link',
+                'base_frame': 'base_link',
+                'laser_frame': 'laser_link'
+                
                 # 'map_frame': 'map',
             }]
     )
