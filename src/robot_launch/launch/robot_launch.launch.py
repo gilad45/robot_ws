@@ -66,6 +66,7 @@ def generate_launch_description():
 
                 'publish_tf': True,
                 'publish_odom': 'odom',
+                'odom_frame': 'odom',
                 # You can add other parameters here, like frames:
                 'base_frame': 'base_footprint',
                 'laser_frame': 'lidar_link',
