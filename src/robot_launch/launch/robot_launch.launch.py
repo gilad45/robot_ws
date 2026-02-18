@@ -65,21 +65,20 @@ def generate_launch_description():
             parameters=[{
 
                 'publish_tf': True,
-                'publish_odom': 'odom',
+                'publish_odom': True,
                 # You can add other parameters here, like frames:
                 'base_frame': 'base_link',
-                'laser_frame': 'laser_link'
+                'laser_frame': 'lidar_link'
                 
                 # 'map_frame': 'map',
             }]
     )
-
-    ld.add_action(ros2_laser_scan_matcher)
+    ld.add_action(robot_state_publisher)
     ld.add_action(ldlidar_node)
+    ld.add_action(ros2_laser_scan_matcher)
     ld.add_action(robot_logic_node)
     ld.add_action(robot_motors_node)
     ld.add_action(robot_sensors_node)
-    ld.add_action(robot_state_publisher)
     return ld
 
 
