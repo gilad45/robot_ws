@@ -65,12 +65,11 @@ def generate_launch_description():
             parameters=[{
 
                 'publish_tf': True,
-                'publish_odom': True,
+                'publish_odom': 'odom',
                 # You can add other parameters here, like frames:
                 'base_frame': 'base_link',
-                'laser_frame': 'lidar_link'
-                
-                # 'map_frame': 'map',
+                'laser_frame': 'lidar_link',
+                'map_frame': 'map'
             }]
     )
     ld.add_action(robot_state_publisher)
