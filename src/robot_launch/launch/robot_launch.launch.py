@@ -72,7 +72,15 @@ def generate_launch_description():
                 'map_frame': 'map'
             }]
     )
+
+    robot_joint_publisher = Node(
+            package='joint_state_publisher_gui',
+            executable='joint_state_publisher_gui',
+            name='joint_state_publisher_gui'
+    ),
+
     ld.add_action(robot_state_publisher)
+    ld.add_action(robot_joint_publisher)
     ld.add_action(ldlidar_node)
     ld.add_action(ros2_laser_scan_matcher)
     ld.add_action(robot_logic_node)
