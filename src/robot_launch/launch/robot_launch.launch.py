@@ -97,7 +97,8 @@ def generate_launch_description():
             executable='async_slam_toolbox_node',
             name='slam_toolbox',
             output='screen',
-            parameters=[slam_config_path]
+            parameters=[slam_config_path],
+            namespace=''
     )
 
     configure_event = EmitEvent(
