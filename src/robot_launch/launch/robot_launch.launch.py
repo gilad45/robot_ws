@@ -66,7 +66,6 @@ def generate_launch_description():
 
                 'publish_tf': True,
                 'publish_odom': 'odom',
-                'odom_frame': 'odom',
                 # You can add other parameters here, like frames:
                 'base_frame': 'base_footprint',
                 'laser_frame': 'lidar_link',
@@ -80,6 +79,20 @@ def generate_launch_description():
             name='joint_state_publisher'
     )
 
+    slam_config_path = os.path.join(
+        get_package_share_directory('your_robot_package'), # Or use a direct path
+        'config',
+        'slam_config.yaml'
+    )
+
+    slam_async_node = Node(
+            package='slam_toolbox',
+            executable='async_slam_toolbox_node',
+            name='slam_toolbox',
+            output='screen',
+            parameters=[slam_config_path]
+    ),
+
     ld.add_action(robot_state_publisher)
     ld.add_action(robot_joint_publisher)
     ld.add_action(ldlidar_node)
@@ -87,6 +100,7 @@ def generate_launch_description():
     ld.add_action(robot_logic_node)
     ld.add_action(robot_motors_node)
     ld.add_action(robot_sensors_node)
+    ld.add_action(slam_async_node)
     return ld
 
 
