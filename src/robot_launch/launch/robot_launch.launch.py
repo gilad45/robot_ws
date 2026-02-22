@@ -80,7 +80,7 @@ def generate_launch_description():
     )
 
     slam_config_path = os.path.join(
-        get_package_share_directory('your_robot_package'), # Or use a direct path
+        get_package_share_directory('robot_launch'), # Or use a direct path
         'config',
         'slam_config.yaml'
     )
