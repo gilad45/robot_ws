@@ -3,6 +3,13 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch_ros.actions import LifecycleNode
+from launch.actions import EmitEvent
+from launch.events import matches_action
+from launch_ros.events.lifecycle import ChangeState
+from lifecycle_msgs.msg import Transition
+from launch.actions import RegisterEventHandler
+from launch_ros.event_handlers import OnStateTransition
 
 
 def generate_launch_description():
@@ -85,12 +92,34 @@ def generate_launch_description():
         'slam_config.yaml'
     )
 
-    slam_async_node = Node(
+    slam_async_node = LifecycleNode(
             package='slam_toolbox',
             executable='async_slam_toolbox_node',
             name='slam_toolbox',
             output='screen',
             parameters=[slam_config_path]
+    )
+
+    configure_event = EmitEvent(
+    event=ChangeState(
+        lifecycle_node_matcher=matches_action(slam_async_node),
+        transition_id=Transition.TRANSITION_CONFIGURE,
+        )
+    )   
+
+    activate_event = EmitEvent(
+    event=ChangeState(
+        lifecycle_node_matcher=matches_action(slam_async_node),
+        transition_id=Transition.TRANSITION_ACTIVATE,
+        )
+    )
+
+    activate_on_configure = RegisterEventHandler(
+        OnStateTransition(
+            target_lifecycle_node=slam_async_node,
+            goal_state='inactive',
+            entities=[activate_event],
+        )
     )
 
     ld.add_action(robot_state_publisher)
@@ -101,6 +130,8 @@ def generate_launch_description():
     ld.add_action(robot_motors_node)
     ld.add_action(robot_sensors_node)
     ld.add_action(slam_async_node)
+    ld.add_action(configure_event)
+    ld.add_action(activate_on_configure)
     return ld
 
 
