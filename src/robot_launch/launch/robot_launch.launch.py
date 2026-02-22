@@ -91,7 +91,7 @@ def generate_launch_description():
             name='slam_toolbox',
             output='screen',
             parameters=[slam_config_path]
-    ),
+    )
 
     ld.add_action(robot_state_publisher)
     ld.add_action(robot_joint_publisher)
