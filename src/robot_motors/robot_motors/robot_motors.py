@@ -72,9 +72,11 @@ def main(args=None):
         pass
     finally:
         # THIS IS THE FIX: This code runs no matter how the script ends
-        node.stop_motors()
-        node.destroy_node()
-        rclpy.shutdown()
+        
+        if rclpy.ok():
+            node.stop_motors()
+            node.destroy_node()
+            rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
