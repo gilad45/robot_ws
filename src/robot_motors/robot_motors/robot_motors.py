@@ -34,8 +34,8 @@ class MotorDriver(Node):
         angular = msg.angular.z
 
         # Differential drive math
-        left_speed = linear - angular
-        right_speed = linear + angular
+        left_speed = linear + angular
+        right_speed = linear - angular
 
         # Clamp and move left motor
         self.move_motor(self.left_motor, left_speed)
