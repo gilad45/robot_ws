@@ -45,6 +45,7 @@ class MotorDriver(Node):
     def move_motor(self, motor_obj, speed):
         # Ensure speed is between -1.0 and 1.0
         speed = max(min(speed, 1.0), -1.0)
+        speed=speed*-1.0
         
         if speed > 0:
             motor_obj.forward(speed)
