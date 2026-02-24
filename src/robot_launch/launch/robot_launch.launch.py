@@ -2,8 +2,10 @@ import xacro
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
 from launch_ros.actions import Node
 from launch_ros.actions import LifecycleNode
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions import EmitEvent
 from launch.events import matches_action
 from launch_ros.events.lifecycle import ChangeState
@@ -92,6 +94,12 @@ def generate_launch_description():
         'slam_config.yaml'
     )
 
+    nav2_config_path = os.path.join(
+        get_package_share_directory('robot_launch'), # Or use a direct path
+        'config',
+        'nav2_config.yaml'
+    )
+
     slam_async_node = LifecycleNode(
             package='slam_toolbox',
             executable='async_slam_toolbox_node',
@@ -123,6 +131,20 @@ def generate_launch_description():
         )
     )
 
+    nav2_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('nav2_bringup'),
+                'launch',
+                'navigation_launch.py'
+            )
+        ),
+        launch_arguments={
+            'params_file': nav2_config_path,
+            'use_sim_time': 'false'
+        }.items()
+    )
+
     ld.add_action(robot_state_publisher)
     ld.add_action(robot_joint_publisher)
     ld.add_action(ldlidar_node)
@@ -133,6 +155,7 @@ def generate_launch_description():
     ld.add_action(slam_async_node)
     ld.add_action(configure_event)
     ld.add_action(activate_on_configure)
+    ld.add_action(nav2_launch)
     return ld
 
 
